@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Handy-Ersatzteile Lager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand__dot"></div>
+        <div>
+          <p class="brand__kicker">Lagerverwaltung</p>
+          <h1>Handy-Ersatzteile</h1>
+        </div>
+      </div>
+      <div class="topbar__actions">
+        <button class="ghost-button" id="exportButton">CSV Export</button>
+        <button class="primary-button" id="newPartButton">Teil hinzufügen</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel--wide">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Dashboard</p>
+            <h2>Bestandsübersicht</h2>
+          </div>
+          <div class="filter-group">
+            <label class="chip"><input type="checkbox" id="onlyCritical" /> Kritisch</label>
+            <label class="chip"><input type="checkbox" id="onlyLow" /> Niedrig</label>
+            <label class="chip"><input type="checkbox" id="onlyAvailable" /> Lagernd</label>
+          </div>
+        </div>
+
+        <div class="stats-grid" id="summaryCards"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Bestand</p>
+            <h2>Aktive Artikel</h2>
+          </div>
+          <div class="search-controls">
+            <input type="search" id="searchInput" placeholder="Suche nach Modell, Teil oder Lieferant" />
+            <select id="categoryFilter">
+              <option value="">Alle Kategorien</option>
+            </select>
+            <select id="statusFilter">
+              <option value="">Alle Stati</option>
+              <option value="available">Lagernd</option>
+              <option value="low">Niedrig</option>
+              <option value="critical">Kritisch</option>
+              <option value="ordered">Bestellt</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Teil</th>
+                <th>Modell</th>
+                <th>Kategorie</th>
+                <th>Standort</th>
+                <th>Bestand</th>
+                <th>Lieferant</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel panel--wide">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Zugänge & Aktionen</p>
+            <h2>Neues Teil anlegen</h2>
+          </div>
+        </div>
+        <form id="partForm" class="form-grid">
+          <label>Teilname<input required name="name" placeholder="z.B. OLED Display" /></label>
+          <label>Modell<input required name="model" placeholder="z.B. iPhone 14" /></label>
+          <label>Kategorie<input required name="category" placeholder="Display, Akku, Kamera..." /></label>
+          <label>Standort<input name="location" placeholder="Gang B, Regal 3" /></label>
+          <label>Lieferant<input name="supplier" placeholder="z.B. MobileParts GmbH" /></label>
+          <label>Mindestbestand<input type="number" min="0" name="reorderLevel" value="5" /></label>
+          <label>Bestand<input type="number" min="0" name="quantity" value="10" /></label>
+          <div class="form-actions">
+            <button type="reset" class="ghost-button">Zurücksetzen</button>
+            <button type="submit" class="primary-button">Teil speichern</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <template id="rowTemplate">
+    <tr>
+      <td class="cell-main">
+        <div class="title"></div>
+        <p class="muted subline"></p>
+      </td>
+      <td class="muted model"></td>
+      <td><span class="pill category"></span></td>
+      <td class="muted location"></td>
+      <td class="quantity"></td>
+      <td class="muted supplier"></td>
+      <td><span class="pill status"></span></td>
+      <td class="row-actions">
+        <button class="icon-button" data-action="increment" title="+5 Bestand">＋</button>
+        <button class="icon-button" data-action="decrement" title="-1 Bestand">–</button>
+      </td>
+    </tr>
+  </template>
+
+  <template id="cardTemplate">
+    <article class="stat-card">
+      <div class="stat-card__top">
+        <p class="muted"></p>
+        <span class="pill"></span>
+      </div>
+      <div class="stat-card__value"></div>
+      <p class="muted"></p>
+    </article>
+  </template>
+
+  <script src="src/app.js"></script>
+</body>
+</html>
